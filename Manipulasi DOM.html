@@ -1,51 +1,136 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const taskInput = document.getElementById('new-task');
-    const addTaskBtn = document.getElementById('add-task-btn');
-    const taskList = document.getElementById('task-list');
-
-    // Fungsi untuk menambahkan tugas
-    function addTask() {
-        const taskText = taskInput.value.trim();
-
-        if (taskText === '') {
-            alert('Tugas tidak boleh kosong!');
-            return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
-        // Buat elemen li baru
-        const li = document.createElement('li');
-        li.textContent = taskText;
-
-        // Tombol selesai
-        li.addEventListener('click', function() {
-            li.classList.toggle('completed');
-        });
-
-        // Tombol hapus
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = 'Hapus';
-        removeBtn.classList.add('remove-btn');
-        removeBtn.addEventListener('click', function() {
-            li.remove();
-        });
-
-        // Tambahkan tombol hapus ke elemen li
-        li.appendChild(removeBtn);
-
-        // Tambahkan li ke daftar tugas
-        taskList.appendChild(li);
-
-        // Kosongkan input
-        taskInput.value = '';
-    }
-
-    // Event listener untuk tombol tambah
-    addTaskBtn.addEventListener('click', addTask);
-
-    // Event listener untuk menambahkan tugas dengan tombol "Enter"
-    taskInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            addTask();
+        #todo-app {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            text-align: center;
         }
-    });
-});
+
+        #new-task {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0 4%;
+        }
+
+        li {
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 10px;
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .remove-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="todo-app">
+        <h1>Todo List</h1>
+        <input type="text" id="new-task" placeholder="Tambahkan tugas baru">
+        <button id="add-task-btn">Tambah Tugas</button>
+        <ul id="task-list"></ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const taskInput = document.getElementById('new-task');
+            const addTaskBtn = document.getElementById('add-task-btn');
+            const taskList = document.getElementById('task-list');
+
+            // Fungsi untuk menambahkan tugas
+            function addTask() {
+                const taskText = taskInput.value.trim();
+                if (taskText === '') {
+                    alert('Tugas tidak boleh kosong!');
+                    return;
+                }
+
+                const taskItem = document.createElement('li');
+                taskItem.textContent = taskText;
+
+                // Menandai tugas sebagai selesai
+                taskItem.addEventListener('click', function() {
+                    taskItem.classList.toggle('completed');
+                });
+
+                // Tombol untuk menghapus tugas
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = 'Hapus';
+                removeBtn.classList.add('remove-btn');
+                removeBtn.addEventListener('click', function() {
+                    taskList.removeChild(taskItem);
+                });
+
+                taskItem.appendChild(removeBtn);
+                taskList.appendChild(taskItem);
+
+                // Mengosongkan input setelah tugas ditambahkan
+                taskInput.value = '';
+            }
+
+            // Event listener untuk tombol tambah
+            addTaskBtn.addEventListener('click', addTask);
+
+            // Event listener untuk menambah tugas dengan Enter
+            taskInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addTask();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
